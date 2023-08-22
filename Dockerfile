@@ -19,9 +19,8 @@ RUN apt-get update && apt-get install -y g++
 # Copy the Django project files to the working directory
 COPY . .
 
-# Copy the entrypoint script to the container
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Run Django's migration and then the development server
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
 
-# Set the entrypoint to run the script
-ENTRYPOINT ["/entrypoint.sh"]
+#Running the follwing cmd to ensure security and limiting the resources of container
+#docker run --cpus=0.5 --memory=512m --read-only oj_evaluation_server
